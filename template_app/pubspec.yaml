@@ -11,9 +11,16 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.4
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
 
 flutter:
+  generate: true
+
+  assets:
+    - assets/
+    - assets/icons/
+
   uses-material-design: true

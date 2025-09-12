@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.template_app"
+    namespace = "com.jonas.template_app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -20,10 +20,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.template_app"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        applicationId = "com.jonas.template_app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -32,9 +29,20 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    flavorDimensions += "dimension"
+
+    productFlavors {
+        white {
+            applicationId "com.jonas.template_app.white"
+            resValue "string", "app_name", "White"
+        }
+        black {
+            applicationId "com.jonas.template_app.black"
+            resValue "string", "app_name", "Black"
         }
     }
 }
