@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: API/Dockerfile
+    ports:
+      - "4040:5000"
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_URLS=http://+:5000
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - app-network
+
+  flutterweb:
+    build:
+      context: ./flutter_app
+      dockerfile: Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    ports:
+      - "4041:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

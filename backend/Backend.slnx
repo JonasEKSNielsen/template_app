@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="API/API.csproj" />
+  <Project Path="Backend.AppHost/Backend.AppHost.csproj" />
+  <Project Path="Backend.ServiceDefaults/Backend.ServiceDefaults.csproj" />
+  <Project Path="Models/Models.csproj" Id="2056d58d-9295-48f3-8fed-7f84a0196a75" />
+  <Project Path="Repositories/Repositories.csproj" Id="e2e01f3b-fc0c-433d-b4e7-c853a3b20ebd" />
+  <Project Path="Services/Services.csproj" Id="d0cff199-d212-4484-a253-8af075797263" />
+</Solution>

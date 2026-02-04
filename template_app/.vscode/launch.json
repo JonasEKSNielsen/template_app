@@ -5,46 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "whiteDebug",
+            "name": "debug",
             "program": "lib/main.dart",
             "request": "launch",
             "type": "dart",
-            "args": [
-                "--flavor",
-                "white"
-            ]
         },
         {
-            "name": "whiteRelease",
+            "name": "release",
             "program": "lib/main.dart",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "args": [
-                "--flavor",
-                "white"
-            ]
-        }, 
-        {
-            "name": "blackDebug",
-            "program": "lib/main.dart",
-            "request": "launch",
-            "type": "dart",
-            "args": [
-                "--flavor",
-                "black"
-            ]
-        },
-        {
-            "name": "blackRelease",
-            "program": "lib/main.dart",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release",
-            "args": [
-                "--flavor",
-                "black"
-            ]
         }
     ]
 }
