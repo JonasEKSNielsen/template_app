@@ -77,9 +77,9 @@ public class PostController : ControllerBase
     /// <response code="200">Returns the updated post.</response>
     /// <response code="404">If the post is not found.</response>
     [HttpPut("{id}")]
-    public async Task<ActionResult<Post>> UpdatePost(string id, [FromBody] string userId, [FromBody] Post post)
+    public async Task<ActionResult<Post>> UpdatePost(string id, [FromBody] Post post)
     {
-        var updated = await _postService.UpdatePostAsync(id, userId, post);
+        var updated = await _postService.UpdatePostAsync(id, post);
         if (updated == null)
         {
             return NotFound();
@@ -95,9 +95,9 @@ public class PostController : ControllerBase
     /// <response code="204">If the post was successfully deleted.</response>
     /// <response code="404">If the post is not found.</response>
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeletePost(string id, [FromBody] string userId)
+    public async Task<ActionResult> DeletePost(string id)
     {
-        var deleted = await _postService.DeletePostAsync(id, userId);
+        var deleted = await _postService.DeletePostAsync(id);
         if (!deleted)
         {
             return NotFound();

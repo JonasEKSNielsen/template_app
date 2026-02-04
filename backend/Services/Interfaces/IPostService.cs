@@ -35,7 +35,7 @@ public interface IPostService
     /// <param name="userId">The unique identifier of the post owner.</param>
     /// <param name="post">The updated post data.</param>
     /// <returns>The updated post if found, otherwise null.</returns>
-    Task<Post?> UpdatePostAsync(string id, string userId, Post post);
+    Task<Post?> UpdatePostAsync(string id, Post post);
 
     /// <summary>
     /// Deletes a post.
@@ -43,5 +43,5 @@ public interface IPostService
     /// <param name="id">The unique identifier of the post to update.</param>
     /// <param name="userId">The unique identifier of the post owner.</param>
     /// <returns>True if the post was deleted successfully, otherwise false.</returns>
-    Task<bool> DeletePostAsync(string id, string userId);
+    Task<bool> DeletePostAsync(string id);
 }

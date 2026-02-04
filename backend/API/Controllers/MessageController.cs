@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 using Models;
+using Models.DTOs;
 
 namespace API.Controllers;
 
@@ -59,9 +60,9 @@ public class MessageController : ControllerBase
     /// <response code="201">Returns the newly created message.</response>
     /// <response code="400">If the messagedata is invalid.</response>
     [HttpPost]
-    public async Task<ActionResult<Chat>> CreateChat([FromBody] string message, [FromBody] string userId, [FromBody] string chatId)
+    public async Task<ActionResult<Chat>> SendMessage([FromBody] MessageDTO dto)
     {
-        var created = await _messageService.SendMessageAsync(message, userId, chatId);
+        var created = await _messageService.SendMessageAsync(dto);
         if (created == null)
         {
             return BadRequest();
@@ -78,9 +79,9 @@ public class MessageController : ControllerBase
     /// <response code="200">Returns the updated message.</response>
     /// <response code="404">If the message is not found.</response>
     [HttpPut("{id}")]
-    public async Task<ActionResult<Message>> UpdateMessage(string id, [FromBody] string userId, [FromBody] Message message)
+    public async Task<ActionResult<Message>> UpdateMessage(string id, [FromBody] Message message)
     {
-        var updated = await _messageService.UpdateMessageAsync(id, userId, message);
+        var updated = await _messageService.UpdateMessageAsync(id, message);
         if (updated == null)
         {
             return NotFound();
@@ -95,9 +96,9 @@ public class MessageController : ControllerBase
     /// <response code="204">If the message was successfully deleted.</response>
     /// <response code="404">If the message is not found.</response>
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteMessage(string id, string userId)
+    public async Task<ActionResult> DeleteMessage(string id)
     {
-        var deleted = await _messageService.DeleteMessageAsync(id, userId);
+        var deleted = await _messageService.DeleteMessageAsync(id);
         if (!deleted)
         {
             return NotFound();

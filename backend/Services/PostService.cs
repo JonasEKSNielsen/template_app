@@ -31,11 +31,10 @@ public class PostService : IPostService
         return await _postRepo.PostPost(post);
     }
 
-    public async Task<Post?> UpdatePostAsync(string id, string userId, Post post)
+    public async Task<Post?> UpdatePostAsync(string id, Post post)
     {
         var existing = await _postRepo.GetPost(id);
         if (existing == null) return null;
-        if (existing.OwnerId != userId) return null;
 
         existing.Content = post.Content;
         existing.UpdatedAt = DateTime.UtcNow;
@@ -43,12 +42,10 @@ public class PostService : IPostService
         return await _postRepo.UpdatePost(existing);
     }
 
-    public async Task<bool> DeletePostAsync(string id, string userId)
+    public async Task<bool> DeletePostAsync(string id)
     {
         Post? postToBeDeleted = await _postRepo.GetPost(id);
         if (postToBeDeleted == null)
-            return false;
-        if (postToBeDeleted.OwnerId != userId)
             return false;
 
         return await _postRepo.DeletePost(id);
