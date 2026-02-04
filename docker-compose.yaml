@@ -15,7 +15,7 @@ services:
 
   flutterweb:
     build:
-      context: ./flutter_app
+      context: ./template_app
       dockerfile: Dockerfile
       args:
         - BUILDKIT_INLINE_CACHE=1
