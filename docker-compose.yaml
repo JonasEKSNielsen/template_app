@@ -1,7 +1,7 @@
 services:
   backend:
     build:
-      context: ./Backend
+      context: ./backend
       dockerfile: API/Dockerfile
     ports:
       - "4040:5000"
