@@ -4,7 +4,7 @@ services:
       context: ./backend
       dockerfile: API/Dockerfile
     ports:
-      - "4040:5000"
+      - "4048:5000"
     env_file:
       - .env
     environment:
@@ -20,7 +20,7 @@ services:
       args:
         - BUILDKIT_INLINE_CACHE=1
     ports:
-      - "4041:80"
+      - "4049:80"
     depends_on:
       - backend
     networks:
