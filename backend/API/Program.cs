@@ -1,19 +1,22 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Repositories;
 using Repositories.Context;
 using Repositories.Interfaces;
 using Scalar.AspNetCore;
 using Services;
 using Services.Interfaces;
-using System;
-using System.Text;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
 builder.AddServiceDefaults();
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 IConfiguration Configuration = builder.Configuration;
 
