@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 abstract class Constants {
-
   ///
   /// GENERAL colors
   ///
@@ -16,14 +15,10 @@ abstract class Constants {
   );
 
   static const Gradient buttonPressed = LinearGradient(
-    colors: <Color>[
-      Color(0x20FFFFFF),
-      Color(0x20FFFFFF)
-    ],
+    colors: <Color>[Color(0x20FFFFFF), Color(0x20FFFFFF)],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-
 
   //endregion
 }

@@ -1,21 +1,22 @@
+import 'package:flutter/cupertino.dart';
+
 // EVENTS
 abstract class LoginEvents {
   const LoginEvents();
 }
 
-class LoadLoginEvent extends LoginEvents {
-  const LoadLoginEvent();
+class ContinueWithGoogleEvent extends LoginEvents {
+  final BuildContext context;
+
+  const ContinueWithGoogleEvent({required this.context});
 }
 
-// STATES
-abstract class LoginState {
-  const LoginState();
-}
+class LoginState {
+  final bool isSubmitting;
+  final String? errorMessage;
 
-class LoadingLoginState extends LoginState {
-  const LoadingLoginState();
-}
-
-class ShowLoginState extends LoginState {
-  const ShowLoginState();
+  const LoginState({
+    this.isSubmitting = false,
+    this.errorMessage,
+  });
 }

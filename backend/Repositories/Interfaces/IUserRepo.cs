@@ -11,6 +11,13 @@ public interface IUserRepo
     public Task<User?> GetUser(string id);
 
     /// <summary>
+    /// Gets User with given email from table
+    /// </summary>
+    /// <param name="email">The email of the wanted User</param>
+    /// <returns>User with given email, if not found returns null</returns>
+    public Task<User?> GetUserByEmail(string email);
+
+    /// <summary>
     /// Posts a new User to the table
     /// </summary>
     /// <param name="newUser">The new User that needs to be created</param>

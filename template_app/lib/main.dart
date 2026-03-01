@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:template_app/helpers/auth_service.dart';
 import 'package:template_app/helpers/theme_manager.dart';
 import 'package:template_app/pages/login/login_page.dart';
+import 'package:template_app/pages/map/map_page.dart';
+
 final globalNavigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  await AuthService.bootstrap();
+  final hasSession = await AuthService.hasSession();
+  runApp(MyApp(hasSession: hasSession));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool hasSession;
+
+  const MyApp({super.key, required this.hasSession});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +27,7 @@ class MyApp extends StatelessWidget {
           theme: buildLightTheme(),
           darkTheme: buildDarkTheme(),
           themeMode: mode,
-          home: const LoginPage(),
+          home: hasSession ? const MapPage() : const LoginPage(),
         );
       },
     );

@@ -35,6 +35,13 @@ public class UserRepo : IUserRepo
     }
 
     /// <inheritdoc/>
+    public async Task<User?> GetUserByEmail(string email)
+    {
+        return await _dbContext.Users
+            .FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
+    }
+
+    /// <inheritdoc/>
     public async Task<User?> PostUser(User newUser)
     {
         _dbContext.Users.Add(newUser);

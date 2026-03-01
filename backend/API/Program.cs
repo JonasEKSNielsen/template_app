@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Repositories;
 using Repositories.Context;
 using Repositories.Interfaces;
@@ -6,6 +7,8 @@ using Scalar.AspNetCore;
 using Services;
 using Services.Interfaces;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,16 +31,38 @@ builder.Services.AddDbContext<AppDBContext>(options => options.UseNpgsql(connect
 
 // Add dependcies for dependency injection
 // repos
-builder.Services.AddScoped<IChatRepo, ChatRepo>();
-builder.Services.AddScoped<IMessageRepo, MessageRepo>();
-builder.Services.AddScoped<IPostRepo, PostRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 
 // services
-builder.Services.AddScoped<IChatService, ChatService>();
-builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddHttpClient();
+
+var jwtSection = builder.Configuration.GetSection("Jwt");
+var jwtSecret = jwtSection["SecretKey"] ?? throw new InvalidOperationException("Missing Jwt:SecretKey.");
+var jwtIssuer = jwtSection["Issuer"] ?? "MyProject.Api";
+var jwtAudience = jwtSection["Audience"] ?? "FlutterApp";
+
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
+            ClockSkew = TimeSpan.FromMinutes(1),
+        };
+    });
 
 // Add services to the container.
 
@@ -120,8 +145,8 @@ app.MapScalarApiReference(options =>
 app.UseCors(app.Environment.IsDevelopment() ? "AllowAllLocalhost" : "AllowFlutterApp");
 
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

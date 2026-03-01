@@ -27,8 +27,5 @@ namespace Models
         [Required(ErrorMessage = "Der skal tilføjes et billede")]
         [Base64String(ErrorMessage = "Billede er ikke et gyldigt base64 billede")]
         public required string Base64Pfp { get; set; }
-        public List<UserChatConvo>? Chats { get; set; }
-        public List<UserPostLiked>? Liked { get; set; }
-        public List<Post>? CreatedPosts { get; set; } 
     }
 }

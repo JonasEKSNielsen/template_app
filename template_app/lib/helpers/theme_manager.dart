@@ -8,7 +8,9 @@ double _appbarFontSize = 24;
 FontWeight _appbarFontWeight = FontWeight.w600;
 
 void toggleTheme() {
-  themeNotifier.value = themeNotifier.value == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+  themeNotifier.value = themeNotifier.value == ThemeMode.dark
+      ? ThemeMode.light
+      : ThemeMode.dark;
 }
 
 ThemeData buildLightTheme() {
@@ -64,11 +66,7 @@ Widget themeSwitchWidget() {
     valueListenable: themeNotifier,
     builder: (context, mode, _) {
       final isDark = mode == ThemeMode.dark;
-      return Switch(
-        value: isDark,
-        onChanged: (_) => toggleTheme(),
-      );
+      return Switch(value: isDark, onChanged: (_) => toggleTheme());
     },
   );
 }
-
