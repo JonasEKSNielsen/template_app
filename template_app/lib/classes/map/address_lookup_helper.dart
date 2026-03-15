@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:template_app/objects/address_suggestion.dart';
+import 'package:template_app/classes/objects/address_suggestion.dart';
 
 class AddressLookupHelper {
   static Future<List<AddressSuggestion>> searchSuggestions(String query) async {

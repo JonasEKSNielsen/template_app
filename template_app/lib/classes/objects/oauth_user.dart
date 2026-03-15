@@ -15,7 +15,7 @@ class OAuthUser {
     required this.picture,
   });
 
-  factory OAuthUser.fromJson(Map<String, dynamic> json) {
+  factory OAuthUser.fromJson(Map<dynamic, dynamic> json) {
     return OAuthUser(
       id: json['id'] as int,
       username: json['username'] as String,

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:template_app/objects/oauth_response.dart';
+import 'package:template_app/classes/objects/oauth_response.dart';
 
 abstract class AuthStorage {
   static const _storage = FlutterSecureStorage();

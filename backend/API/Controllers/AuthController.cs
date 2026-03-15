@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using Models.DTOs;
 using Services.Interfaces;
 
@@ -27,6 +28,35 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("github/callback")]
+    public async Task<IActionResult> GitHubCallback([FromQuery] string? code, [FromQuery] string? error)
+    {
+        if (!string.IsNullOrWhiteSpace(error))
+        {
+            return Content(BuildPopupResultHtml("github_oauth_error", null, $"github error {error}"), "text/html");
+        }
+
+        if (string.IsNullOrWhiteSpace(code))
+        {
+            return Content(BuildPopupResultHtml("github_oauth_error", null, "github no code"), "text/html");
+        }
+
+        var redirectUri = $"{Request.Scheme}://{Request.Host}/api/auth/github/callback";
+        var result = await _authService.OAuthLoginAsync(new OAuthLoginDTO
+        {
+            Provider = "GitHub",
+            AccessToken = code,
+            RedirectUri = redirectUri,
+        });
+
+        if (result == null)
+        {
+            return Content(BuildPopupResultHtml("github_oauth_error", null, "github login failed try again"), "text/html");
+        }
+
+        return Content(BuildPopupResultHtml("github_oauth_success", result, null), "text/html");
+    }
+
     [HttpGet("me")]
     public ActionResult<object> Me()
     {
@@ -48,7 +78,7 @@ public class AuthController : ControllerBase
             email = session.User.Email,
             displayName = session.User.Username,
             avatarUrl = session.User.Picture,
-            provider = "google"
+            provider = "oauth"
         });
     }
 
@@ -80,5 +110,35 @@ public class AuthController : ControllerBase
         }
 
         return header[prefix.Length..].Trim();
+    }
+
+    private static string BuildPopupResultHtml(string type, AuthResponseDTO? data, string? message)
+    {
+        var jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        };
+
+        var payloadJson = JsonSerializer.Serialize(new
+        {
+            type,
+            data,
+            message,
+        }, jsonOptions);
+
+        return "<!doctype html>\n"
+            + "<html>\n"
+            + "<body>\n"
+            + "  <script>\n"
+            + "    (function () {\n"
+            + "      var payload = " + payloadJson + ";\n"
+            + "      if (window.opener) {\n"
+            + "        window.opener.postMessage(payload, '*');\n"
+            + "      }\n"
+            + "      window.close();\n"
+            + "    })();\n"
+            + "  </script>\n"
+            + "</body>\n"
+            + "</html>";
     }
 }

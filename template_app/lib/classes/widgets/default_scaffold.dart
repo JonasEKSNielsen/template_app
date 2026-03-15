@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:template_app/values/assets.dart';
+import 'package:template_app/classes/values/assets.dart';
 
 class DefaultScaffold extends StatelessWidget {
   const DefaultScaffold({
@@ -16,10 +16,7 @@ class DefaultScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
-    final backgroundAsset = brightness == Brightness.dark
-        ? Asset.blackBackground
-        : Asset.whiteBackground;
+    const backgroundAsset = Asset.whiteBackground;
 
     return Scaffold(
       appBar: AppBar(

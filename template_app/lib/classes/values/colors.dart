@@ -11,13 +11,11 @@ class AppColors {
     offset: Offset(0, 4),
   );
 
-  // Light mode
   static const Color lightBackground = Color(0xFFFFFFFF);
   static const Color lightHeader = Color(0xFFFFFCF5);
   static const Color lightTile = Color(0xFFFFFCF5);
   static const Color lightCard = Color(0xFFFFFFFF);
 
-  // Dark mode
   static const Color darkBackground = Color(0xFF111418);
   static const Color darkHeader = Color(0xFF1A1F26);
   static const Color darkTile = Color(0xFF1F2630);

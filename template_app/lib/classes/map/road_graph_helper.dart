@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:http/http.dart' as http;
-import 'package:template_app/objects/address_suggestion.dart';
-import 'package:template_app/objects/distance_result.dart';
+import 'package:template_app/classes/objects/address_suggestion.dart';
+import 'package:template_app/classes/objects/distance_result.dart';
 
 class RoadGraphNode {
   final int id;
@@ -73,7 +73,8 @@ class RoadGraphHelper {
     var nextNodeId = 0;
 
     int getOrCreateNodeId(double latitude, double longitude) {
-      final key = '${latitude.toStringAsFixed(6)},${longitude.toStringAsFixed(6)}';
+      final key =
+          '${latitude.toStringAsFixed(6)},${longitude.toStringAsFixed(6)}';
       final existing = nodeByKey[key];
       if (existing != null) {
         return existing;
@@ -178,7 +179,9 @@ class RoadGraphHelper {
 
     final a =
         math.pow(math.sin(deltaLat / 2), 2) +
-        math.cos(lat1Rad) * math.cos(lat2Rad) * math.pow(math.sin(deltaLon / 2), 2);
+        math.cos(lat1Rad) *
+            math.cos(lat2Rad) *
+            math.pow(math.sin(deltaLon / 2), 2);
     final c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
     return earthRadiusKm * c;
   }

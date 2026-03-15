@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:template_app/helpers/auth_storage.dart';
+import 'package:template_app/classes/helpers/auth_storage.dart';
 import '../objects/api_path.dart';
 
 class API {
-  static const String _baseUrl =
-      '${String.fromEnvironment('API_URL_HTTPS', defaultValue: 'https://localhost:7258')}/api/';
+  static const String apiBaseUrl = String.fromEnvironment(
+    'API_URL_HTTPS',
+    defaultValue: 'https://localhost:7258',
+  );
+
+  static const String _baseUrl = '$apiBaseUrl/api/';
 
   static final Map<String, String> _headers = {};
 
@@ -209,7 +213,10 @@ class API {
     await _applyAuthHeader();
 
     return _attemptApiWithRefresh(
-      () => http.delete(buildUri(action), headers: {'Accept': 'application/json', ..._headers}),
+      () => http.delete(
+        buildUri(action),
+        headers: {'Accept': 'application/json', ..._headers},
+      ),
       null,
     );
   }

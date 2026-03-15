@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:template_app/pages/login/login_bloc.dart';
 import 'package:template_app/pages/login/login_events_states.dart';
-import 'package:template_app/widgets/default_scaffold.dart';
+import 'package:template_app/classes/widgets/default_scaffold.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,7 +14,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-
     return BlocProvider(
       create: (_) => LoginBloc(),
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -36,12 +35,21 @@ class _LoginPageState extends State<LoginPage> {
                           ? null
                           : () {
                               context.read<LoginBloc>().add(
-                                ContinueWithGoogleEvent(
-                                  context: context,
-                                ),
+                                ContinueWithGoogleEvent(context: context),
                               );
                             },
                       child: const Text('Continue with Google'),
+                    ),
+                    const SizedBox(height: 12),
+                    ElevatedButton(
+                      onPressed: isSubmitting
+                          ? null
+                          : () {
+                              context.read<LoginBloc>().add(
+                                ContinueWithGitHubEvent(context: context),
+                              );
+                            },
+                      child: const Text('Continue with GitHub'),
                     ),
                     if (isSubmitting) ...[
                       const SizedBox(height: 14),

@@ -3,15 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:template_app/helpers/map/address_lookup_helper.dart';
-import 'package:template_app/helpers/map/map_calculation_helper.dart';
-import 'package:template_app/objects/address_suggestion.dart';
-import 'package:template_app/helpers/auth_service.dart';
-import 'package:template_app/helpers/general_util.dart';
-import 'package:template_app/helpers/theme_manager.dart';
-import 'package:template_app/objects/distance_result.dart';
+import 'package:template_app/classes/map/address_lookup_helper.dart';
+import 'package:template_app/classes/map/map_calculation_helper.dart';
+import 'package:template_app/classes/objects/address_suggestion.dart';
+import 'package:template_app/classes/helpers/auth_service.dart';
+import 'package:template_app/classes/helpers/general_util.dart';
+import 'package:template_app/classes/objects/distance_result.dart';
 import 'package:template_app/pages/login/login_page.dart';
-import 'package:template_app/widgets/default_scaffold.dart';
+import 'package:template_app/classes/widgets/default_scaffold.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -177,17 +176,6 @@ class _MapPageState extends State<MapPage> {
             OutlinedButton(
               onPressed: _logout,
               child: const Text('Log out'),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Dark mode',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                themeSwitchWidget(),
-              ],
             ),
             const SizedBox(height: 12),
             if ((_error ?? '').isNotEmpty)

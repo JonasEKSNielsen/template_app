@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
-import 'package:template_app/helpers/map/graph_algorithms_helper.dart';
-import 'package:template_app/helpers/map/road_graph_helper.dart';
-import 'package:template_app/objects/address_suggestion.dart';
-import 'package:template_app/objects/distance_result.dart';
+import 'package:template_app/classes/map/graph_algorithms_helper.dart';
+import 'package:template_app/classes/map/road_graph_helper.dart';
+import 'package:template_app/classes/objects/address_suggestion.dart';
+import 'package:template_app/classes/objects/distance_result.dart';
 
 class MapCalculationHelper {
   static Future<DistanceResult> calculateByRoadGraph({
@@ -12,16 +12,19 @@ class MapCalculationHelper {
   }) async {
     final graph = await RoadGraphHelper.buildRoadGraph(from: from, to: to);
 
+    // Kør alle strategier på samme graf, så sammenligningen handler mest om algoritmen.
     final dijkstra = GraphAlgorithmsHelper.runDijkstra(graph);
     final aStar = GraphAlgorithmsHelper.runAStar(graph);
     final greedy = GraphAlgorithmsHelper.runGreedyBestFirst(graph);
 
     const assumedAverageSpeedKmh = 50.0;
 
+    // Konverter rutelængde til et groft køretids estimat med en fast hastighedsantagelse.
     final dijkstraMinutes = (dijkstra.distanceKm / assumedAverageSpeedKmh) * 60;
     final aStarMinutes = (aStar.distanceKm / assumedAverageSpeedKmh) * 60;
     final greedyMinutes = (greedy.distanceKm / assumedAverageSpeedKmh) * 60;
 
+    // Baseline luftlinjeafstand, nyttig for at se hvor indirekte ruten i vejgrafen er.
     final haversineKm = _haversineKm(
       from.latitude,
       from.longitude,
@@ -29,18 +32,20 @@ class MapCalculationHelper {
       to.longitude,
     );
 
+    // Oversæt hvert node-id tilbage til koordinater, så den valgte rute kan tegnes på kortet.
     final dijkstraPath = dijkstra.nodePath
         .map((nodeId) => graph.nodes[nodeId]!.point)
         .toList();
 
     final aStarPath = aStar.nodePath
-      .map((nodeId) => graph.nodes[nodeId]!.point)
-      .toList();
+        .map((nodeId) => graph.nodes[nodeId]!.point)
+        .toList();
 
     final greedyPath = greedy.nodePath
-      .map((nodeId) => graph.nodes[nodeId]!.point)
-      .toList();
+        .map((nodeId) => graph.nodes[nodeId]!.point)
+        .toList();
 
+    // Dijkstra er den optimale reference; mål hvor meget ekstra afstand Greedy efterlader.
     final greedyVsDijkstraKm = greedy.distanceKm - dijkstra.distanceKm;
     final greedyVsDijkstraPercent = dijkstra.distanceKm == 0
         ? 0.0
@@ -57,7 +62,8 @@ class MapCalculationHelper {
       dijkstraRoutePoints: dijkstraPath,
       aStarRoutePoints: aStarPath,
       greedyRoutePoints: greedyPath,
-      note: 'Greedy Best-First uses only straight-line heuristic and may be suboptimal. '
+      note:
+          'Greedy Best-First uses only straight-line heuristic and may be suboptimal. '
           'Difference vs Dijkstra: ${greedyVsDijkstraKm.toStringAsFixed(3)} km '
           '(${greedyVsDijkstraPercent.toStringAsFixed(2)}%).',
     );
@@ -79,7 +85,9 @@ class MapCalculationHelper {
 
     final a =
         math.pow(math.sin(deltaLat / 2), 2) +
-        math.cos(lat1Rad) * math.cos(lat2Rad) * math.pow(math.sin(deltaLon / 2), 2);
+        math.cos(lat1Rad) *
+            math.cos(lat2Rad) *
+            math.pow(math.sin(deltaLon / 2), 2);
     final c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
     return earthRadiusKm * c;
   }

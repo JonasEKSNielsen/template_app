@@ -13,12 +13,12 @@ class OAuthResponse {
     required this.user,
   });
 
-  factory OAuthResponse.fromJson(Map<String, dynamic> json) {
+  factory OAuthResponse.fromJson(Map<dynamic, dynamic> json) {
     return OAuthResponse(
       token: json['token'] as String,
       refreshToken: json['refreshToken'] as String,
       expires: DateTime.parse(json['expires'] as String),
-      user: OAuthUser.fromJson(json['user'] as Map<String, dynamic>),
+      user: OAuthUser.fromJson(json['user'] as Map<dynamic, dynamic>),
     );
   }
 
